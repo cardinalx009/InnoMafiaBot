@@ -22,7 +22,7 @@ async def get_info_about_bot(message: types.Message):
 @bot.message_handler(commands=["personal_info"])
 async def send_personal_info(message: types.Message):
     """write personal info to user"""
-    await message.reply("")
+    await message.reply()
 
 
 if __name__ == "__main__":
