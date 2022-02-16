@@ -1,47 +1,44 @@
-from random import randint
-from colorama import Fore, Back
-
-FULL_TABLE = ["Мирный", "Мирный", "Мирный", "Мирный", "Мирный", "Мирный", "Шериф", "Дон", "Мафия", "Мафия"]
-NINE_PEOPLE_TABLE = ["Мирный", "Мирный", "Мирный", "Мирный", "Мирный", "Шериф", "Дон", "Мафия", "Мафия"]
-EIGHT_PEOPLE_TABLE = ["Мирный", "Мирный", "Мирный", "Мирный", "Мирный", "Шериф", "Дон", "Мафия"]
-LIST_FOR_GAMES = {8: EIGHT_PEOPLE_TABLE, 9: NINE_PEOPLE_TABLE, 10: FULL_TABLE}
+FULL_TABLE = ["Civilian", "Civilian", "Civilian", "Civilian", "Civilian", "Civilian", "Sherif", "Don", "Mafia", "Mafia"]
+NINE_PEOPLE_TABLE = ["Civilian", "Civilian", "Civilian", "Civilian", "Civilian", "Sherif", "Don", "Mafia", "Mafia"]
+EIGHT_PEOPLE_TABLE = ["Civilian", "Civilian", "Civilian", "Civilian", "Civilian", "Sherif", "Don", "Mafia"]
 
 
-def generate_table(a: int) -> list:
+def generate_table(a: int) -> dict:
     """Generate roles for 10, 9 or 8 people"""
+    # globalise lists of roles
+    global FULL_TABLE, NINE_PEOPLE_TABLE, EIGHT_PEOPLE_TABLE
+    # aliases and its roles in the game
+    roles = {}
+    # for checking if host did not enter more mafias or more civilians than it can be
+    possible_roles = FULL_TABLE if a == 10 else NINE_PEOPLE_TABLE if a == 9 else EIGHT_PEOPLE_TABLE
 
-    global LIST_FOR_GAMES
-    default = LIST_FOR_GAMES[a]  # sorted list of roles
-    roles = []  # final list of roles
+    #
+    while len(possible_roles) > 0:
+        alias, role = input("Enter the alias then role of this player ").split()
+        if alias[0] != '@' or alias in roles or role not in possible_roles:
+            print("Wrong enter: the alias of player already exist in the game or it was written incorrectly.\nEnter the alias and role again.")
+            continue
 
-    # generate random list of roles
-    for j in range(10):
-        x = default[randint(0, len(default) - 1)]
-        roles.append(x)
-        default.remove(x)
+        roles[alias] = role
+        possible_roles.remove(role)
 
     return roles
 
 
-def game():
-    play = True
-    while play:
-        roles = generate_table()
+def start_game() -> None:
+    """Players take roles, save aliases of players"""
+    players: dict
 
-        print(Fore.CYAN + "Роли игроков:")
+    number_of_players: int = int(input("Enter number of players in the game (from 8 to 10): "))
+    if 8 <= number_of_players <= 10:
+        players = generate_table(number_of_players)
+    else:
+        print("The game is not balanced, it will be unranked.")
+        return
 
-        for i in range(len(roles)):
-            match roles[i]:
-                case "Мафия": color, back = Fore.BLACK, Back.WHITE
-                case "Шериф": color, back = Fore.YELLOW, Back.RESET
-                case "Дон": color, back = Fore.WHITE, Back.BLACK
-                case _: color, back = Fore.RED, Back.RESET
-            print(color + back + "Игрок номер {:d}: {:s}".format(i + 1, roles[i]))
-
-        if not ("да" in input(Fore.CYAN + "Новая игра?").lower()):
-            print("Завершение мафии")
-            play = False
+    print(players)
+    return players
 
 
 if __name__ == "__main__":
-    game()
+    start_game()
