@@ -1,7 +1,5 @@
-import app.users_info
-
 from aiogram import Bot, Dispatcher, types, executor
-from app.users_info import *
+from users_info import *
 
 bot = Dispatcher(Bot("5058417039:AAE8bbyEkehPSCLCDOcOC-z8aB75t5KEMQc"))
 
