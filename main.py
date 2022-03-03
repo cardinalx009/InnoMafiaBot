@@ -1,7 +1,13 @@
 # Main code of mafia bot
 # Catching messages to him and send some answers
 
+# Global task
+# TODO implement returning table for mafia
+# TODO implement some answers for pm messages
+
+# The nearest tasks
 # TODO share to mafia group this bot
+# TODO add image for bot
 
 from aiogram import Bot, Dispatcher, types, executor
 from users_info import *
