@@ -28,5 +28,10 @@ async def send_personal_info(message: types.Message):
     await message.reply("Name: " + player["name"] + "\nID: " + player["id"] + "\nPoints: " + player["points"])
 
 
-if __name__ == "__main__":
+def start() -> None:
+    """start the program (and bot)"""
     executor.start_polling(bot, skip_updates=True)
+
+
+if __name__ == "__main__":
+    start()
