@@ -19,10 +19,13 @@ async def get_info_about_bot(message: types.Message):
                           "For that you have to write your personal id or telegram alias.")
 
 
-@bot.message_handler(commands=["personal_info"])
+@bot.message_handler(commands=["personal_info", "show"])
 async def send_personal_info(message: types.Message):
     """write personal info to user"""
-    await message.reply()
+    alias = '@' + message.chat.username
+    player = parse_data(import_string())[alias]
+
+    await message.reply("Name: " + player["name"] + "\nID: " + player["id"] + "\nPoints: " + player["points"])
 
 
 if __name__ == "__main__":
