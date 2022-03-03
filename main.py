@@ -23,9 +23,17 @@ async def get_info_about_bot(message: types.Message):
 async def send_personal_info(message: types.Message):
     """write personal info to user"""
     alias = '@' + message.chat.username
-    player = parse_data(import_string())[alias]
+    answer: str
 
-    await message.reply("Name: " + player["name"] + "\nID: " + player["id"] + "\nPoints: " + player["points"])
+    try:
+        player = parse_data(import_string())[alias]
+        answer = "Name: " + player["name"] + "\nID: " + player["id"] + "\nPoints: " + player["points"]
+    except KeyError:
+        answer = "Sorry, you are not in Grading System now\nReport about it to club leader or go play mafia."
+    except:
+        print("Connecting problem: " + alias + "is trying to check his grades.")
+        answer = "Sorry, something goes wrong, Report about it to club leader or wait for some days."
+    await message.reply(answer)
 
 
 def start() -> None:
