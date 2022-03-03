@@ -1,1 +1,2 @@
-worker: gunicorn main
+worker: python main.py
+console: gunicorn main
