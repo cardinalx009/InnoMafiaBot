@@ -1,13 +1,19 @@
 from pyrebase import initialize_app
+import dotenv
+from os import getenv
 
-DATA: dict = {"apiKey": "AIzaSyBVugd2_hqpJ6oyxW3mjF8jthIYM_80yyA",
-              "authDomain": "innomafiaapp.firebaseapp.com",
-              "databaseURL": "https://innomafiaapp-default-rtdb.europe-west1.firebasedatabase.app",
-              "projectId": "innomafiaapp",
-              "storageBucket": "innomafiaapp.appspot.com",
-              "messagingSenderId": "120476741929",
-              "appId": "1:120476741929:web:132dc5a5f76a6e14394738",
-              "measurementId": "G-0LMQQNBN7N"}
+dotenv.load_dotenv(dotenv.find_dotenv())
+
+DATA: dict = {
+    "apiKey": getenv("apiKey"),
+    "authDomain": getenv("authDomain"),
+    "databaseURL": getenv("databaseURL"),
+    "projectId": getenv("projectId"),
+    "storageBucket": getenv("storageBucket"),
+    "messagingSenderId": getenv("messagingSenderId"),
+    "appId": getenv("appId"),
+    "measurementId": getenv("measurementId")
+}
 
 
 def import_string() -> str:
