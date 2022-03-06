@@ -15,7 +15,7 @@ from aiogram import Bot, Dispatcher, types, executor
 from users_info import *
 
 dotenv.load_dotenv(dotenv.find_dotenv())
-bot = Bot(getenv("TEST_TOKEN"))
+bot = Bot(getenv("TOKEN"))
 dp = Dispatcher(bot)
 
 
