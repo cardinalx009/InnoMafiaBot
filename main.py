@@ -10,7 +10,7 @@ from users_info import *
 
 load_dotenv(find_dotenv())
 
-bot = Bot(getenv("TEST_TOKEN"))
+bot = Bot(getenv("TOKEN"))
 dp = Dispatcher(bot)
 
 
