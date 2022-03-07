@@ -10,7 +10,7 @@ from users_info import *
 
 load_dotenv(find_dotenv())
 
-bot = Bot(getenv("TEST_TOKEN"))
+bot = Bot(getenv("TOKEN"))
 dp = Dispatcher(bot)
 
 
@@ -32,7 +32,7 @@ async def get_text_messages(message: types.Message):
         "Hello! I am Innopolis Mafia Bot.\n"
         "I can send you info about your games in this season or about your all-time stats.\n"
         "For more information write /info_bot.",
-        reply_markup=get_markup() if message.from_user.id == message.chat.id else None
+        reply_markup=get_markup()
     )
 
 
@@ -51,9 +51,15 @@ async def about(callback_query: types.CallbackQuery):
 
 @dp.callback_query_handler(lambda c: c.data in ["top", "top_rating", "rating", "stat"])
 async def rating(callback_query: types.CallbackQuery):
-    """Send top rating to group chat"""
+    """Send top rating to group chat, using buttons"""
     await bot.answer_callback_query(callback_query.id)
     await bot.send_message(callback_query.message.chat.id, text=top_rating(), reply_markup=get_markup())
+
+
+@dp.message_handler(commands=["top", "top_rating", "rating", "stat"])
+async def rating(message: types.Message):
+    """Send top rating to group chat using commands"""
+    await message.reply(text=top_rating(), reply_markup=get_markup())
 
 
 @dp.callback_query_handler(lambda c: c.data in ["personal_info", "personal_statistics", "personal", "show"])
