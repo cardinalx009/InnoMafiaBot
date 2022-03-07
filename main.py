@@ -32,7 +32,7 @@ async def get_text_messages(message: types.Message):
         "Hello! I am Innopolis Mafia Bot.\n"
         "I can send you info about your games in this season or about your all-time stats.\n"
         "For more information write /info_bot.",
-        reply_markup=get_markup()
+        reply_markup=get_markup() if message.from_user.id == message.chat.id else None
     )
 
 
