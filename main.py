@@ -49,7 +49,7 @@ async def about(callback_query: types.CallbackQuery):
     )
 
 
-@dp.callback_query_handler(lambda c: c.data in ["top", "top_rating", "rating"])
+@dp.callback_query_handler(lambda c: c.data in ["top", "top_rating", "rating", "stat"])
 async def rating(callback_query: types.CallbackQuery):
     """Send top rating to group chat"""
     await bot.answer_callback_query(callback_query.id)
