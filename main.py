@@ -10,7 +10,7 @@ from users_info import *
 
 load_dotenv(find_dotenv())
 
-bot = Bot(getenv("TOKEN"))
+bot = Bot(getenv("TEST_TOKEN"))
 dp = Dispatcher(bot)
 
 
@@ -24,7 +24,7 @@ def get_markup() -> types.InlineKeyboardMarkup:
     return keyboard
 
 
-@dp.message_handler(content_types=['text'])
+@dp.message_handler(content_types=['text'], commands=["start"])
 async def get_text_messages(message: types.Message):
     """Start message, introduction to functions of bot"""
 
@@ -56,7 +56,7 @@ async def rating(callback_query: types.CallbackQuery):
     await bot.send_message(callback_query.message.chat.id, text=top_rating(), reply_markup=get_markup())
 
 
-@dp.callback_query_handler(lambda c: c.data in ["personal_info", "personal_statistics", "personal"])
+@dp.callback_query_handler(lambda c: c.data in ["personal_info", "personal_statistics", "personal", "show"])
 async def personal_info(callback_query: types.CallbackQuery):
     """Send personal info, only to private chat"""
     await bot.answer_callback_query(callback_query.id)
