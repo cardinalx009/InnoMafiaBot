@@ -59,7 +59,7 @@ def top_rating() -> str:
     answer = "Top mafia players:\n"
     top: list = sorted(parse_data(import_string()).values(), key=lambda p: p['points'], reverse=True)
 
-    if top[0] == 0:
+    if top[0][0]['points'] == 0:
         return "Everybody has the same number of points - 0."
 
     top = generate_top(top)
