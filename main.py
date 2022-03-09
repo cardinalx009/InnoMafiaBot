@@ -72,7 +72,8 @@ async def personal_info(callback_query: types.CallbackQuery):
         player = parse_data(import_string())[alias]
         answer = "Your statistics:\nName: " + player["name"] + "\nID: " + player["id"] + "\nPoints: " + player["points"]
     except KeyError:
-        answer = "Sorry, you are not in Rating System now\nReport about it to @Neph0 or @n1ce_timothy or play your first game."
+        answer = "Sorry, you are not in Rating System now\nReport about it to @Neph0 or @n1ce_timothy or play your " \
+                 "first game."
     except:
         print("Connecting problem: " + alias + "is trying to check his grades.")
         answer = "Sorry, something went wrong, Report about it to @Neph0 or @n1ce_timothy."
