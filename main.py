@@ -5,13 +5,16 @@
 # TODO implement some answers for pm messages
 
 from aiogram import Bot, Dispatcher, types, executor
-
+from time import time
 from users_info import *
 
 load_dotenv(find_dotenv())
 
 bot = Bot(getenv("TOKEN"))
 dp = Dispatcher(bot)
+prev_player: Player = Player()
+prev_time: int = int(time())
+spam_list: list[Player] = []
 
 
 def get_markup() -> types.InlineKeyboardMarkup:
@@ -51,15 +54,40 @@ async def about(callback_query: types.CallbackQuery):
 
 @dp.callback_query_handler(lambda c: c.data in ["top", "top_rating", "rating", "stat"])
 async def rating(callback_query: types.CallbackQuery):
+    global prev_player, prev_time, spam_list
     """Send top rating to group chat, using buttons"""
-    await bot.answer_callback_query(callback_query.id)
-    await bot.send_message(callback_query.message.chat.id, text=top_rating(), reply_markup=get_markup())
+    alias = '@' + callback_query.from_user.username
+    try:
+        player = parse_data(import_string())[alias]
+    except KeyError:
+        await bot.answer_callback_query(callback_query.id)
+        await bot.send_message(callback_query.message.chat.id, text=top_rating(), reply_markup=get_markup())
+        return
+
+    # antispam system
+    if prev_player.id == player.id and prev_time <= int(time()) + 30 and player not in spam_list:
+        spam_list.append(player)
+        print(spam_list)
+
+    if player not in spam_list:
+        await bot.answer_callback_query(callback_query.id)
+        await bot.send_message(callback_query.message.chat.id, text=top_rating(), reply_markup=get_markup())
+    prev_time = int(time())
+    prev_player = player
 
 
 @dp.message_handler(commands=["top", "top_rating", "rating", "stat"])
 async def rating(message: types.Message):
     """Send top rating to group chat using commands"""
-    await message.reply(text=top_rating(), reply_markup=get_markup())
+    alias = '@' + message.from_user.username
+    player = parse_data(import_string())[alias]
+    # antispam system
+    if prev_player.id == player.id and prev_time <= time() + 30:
+        player.deactivate()
+        print(player.alias)
+
+    if player.not_spam:
+        await message.reply(text=top_rating(), reply_markup=get_markup())
 
 
 @dp.callback_query_handler(lambda c: c.data in ["personal_info", "personal_statistics", "personal", "show"])
@@ -70,15 +98,27 @@ async def personal_info(callback_query: types.CallbackQuery):
 
     try:
         player = parse_data(import_string())[alias]
-        answer = "Your statistics:\nName: " + player["name"] + "\nID: " + player["id"] + "\nPoints: " + player["points"]
+        answer = "Your statistics:" + \
+                 "\nName: " + player.name + \
+                 "\nID: " + str(player.id) + \
+                 "\nPoints: " + str(player.points)
     except KeyError:
         answer = "Sorry, you are not in Rating System now\nReport about it to @Neph0 or @n1ce_timothy or play your " \
                  "first game."
     except:
-        print("Connecting problem: " + alias + "is trying to check his grades.")
+        print("Connecting problem: " + alias + " is trying to check his grades.")
         answer = "Sorry, something went wrong, Report about it to @Neph0 or @n1ce_timothy."
 
     await bot.send_message(callback_query.from_user.id, text=answer, reply_markup=get_markup())
+
+
+@dp.message_handler(commands="reactiveNeph0n1ce_timothy")
+async def reactivate_players(message: types.Message):
+    global spam_list, prev_player
+    spam_list.clear()
+    prev_player = Player()
+    print(spam_list)
+    await message.reply(text="All players are active", reply_markup=get_markup())
 
 
 def start() -> None:
