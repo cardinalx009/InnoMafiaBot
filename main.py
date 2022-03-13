@@ -67,7 +67,7 @@ async def rating(callback_query: types.CallbackQuery):
     # antispam system
     if prev_player.id == player.id and prev_time <= int(time()) + 30 and player not in spam_list:
         spam_list.append(player)
-        print(spam_list)
+        print(player.alias)
 
     if player not in spam_list:
         await bot.answer_callback_query(callback_query.id)
@@ -83,7 +83,6 @@ async def rating(message: types.Message):
     player = parse_data(import_string())[alias]
     # antispam system
     if prev_player.id == player.id and prev_time <= time() + 30:
-        player.deactivate()
         print(player.alias)
 
     if player.not_spam:
@@ -117,7 +116,6 @@ async def reactivate_players(message: types.Message):
     global spam_list, prev_player
     spam_list.clear()
     prev_player = Player()
-    print(spam_list)
     await message.reply(text="All players are active", reply_markup=get_markup())
 
 
