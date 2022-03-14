@@ -54,8 +54,9 @@ async def about(callback_query: types.CallbackQuery):
 
 @dp.callback_query_handler(lambda c: c.data in ["top", "top_rating", "rating", "stat"])
 async def rating(callback_query: types.CallbackQuery):
-    global prev_player, prev_time, spam_list
     """Send top rating to group chat, using buttons"""
+    global prev_player, prev_time, spam_list
+
     alias = '@' + callback_query.from_user.username
     try:
         player = parse_data(import_string())[alias]
@@ -79,14 +80,24 @@ async def rating(callback_query: types.CallbackQuery):
 @dp.message_handler(commands=["top", "top_rating", "rating", "stat"])
 async def rating(message: types.Message):
     """Send top rating to group chat using commands"""
+    global prev_player, prev_time, spam_list
     alias = '@' + message.from_user.username
-    player = parse_data(import_string())[alias]
+    try:
+        player = parse_data(import_string())[alias]
+    except KeyError:
+        await bot.send_message(message.chat.id, text=top_rating(), reply_markup=get_markup())
+        return
     # antispam system
-    if prev_player.id == player.id and prev_time <= time() + 30:
+
+    if prev_player.id == player.id and prev_time <= int(time()) + 30 and player not in spam_list:
+        spam_list.append(player)
         print(player.alias)
 
-    if player.not_spam:
-        await message.reply(text=top_rating(), reply_markup=get_markup())
+    if player not in spam_list:
+        await bot.answer_callback_query(message.chat.id)
+        await bot.send_message(message.chat.id, text=top_rating(), reply_markup=get_markup())
+    prev_time = int(time())
+    prev_player = player
 
 
 @dp.callback_query_handler(lambda c: c.data in ["personal_info", "personal_statistics", "personal", "show"])
