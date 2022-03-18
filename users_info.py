@@ -17,21 +17,19 @@ DATA: dict = {
 
 
 class Player:
-    def __init__(self, args: list[str] = None):
-        if args is None:
-            args = ["", 0, "", 0]
-        self.alias = str(args[0])
-        self.id = int(args[1])
-        self.name = str(args[2])
-        self.points = int(args[3])
-        # self.loses = int(args[4])
-        # self.attendance: int = self.loses + self.points
+    def __init__(self, *args: str):
+        self.alias: str = str(args[0])
+        self.id: int = int(args[1])
+        self.name: str = str(args[2])
+        self.points: int = int(args[3])
+        self.loses: int = int(args[4])
+        self.attendance: int = self.loses + self.points
 
     def to_string(self) -> str:
         return "Name - " + self.name + \
                "\nId - " + str(self.id) + \
-               "\nPoints - " + str(self.points)  # + \
-        # "\nLoses - " + str(self.loses)
+               "\nPoints - " + str(self.points) + \
+               "\nLoses - " + str(self.loses)
 
 
 def import_string() -> str:
@@ -44,7 +42,7 @@ def parse_data(string: str = "") -> dict:
     players: dict[str] = {}
 
     for substring in string.split(";")[:-1]:
-        player = Player(substring.split(":"))
+        player = Player(*substring.split(":"))
         players[player.alias] = player
 
     return players
@@ -114,4 +112,5 @@ def top_rating() -> str:
 
 
 if __name__ == "__main__":
-    print(pl.name for pl in generate_top(sorted(parse_data(import_string()).values(), key=lambda p: p.points, reverse=True))[0])
+    for p in parse_data(import_string()).values():
+        print(p.name)

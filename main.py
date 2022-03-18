@@ -12,7 +12,7 @@ load_dotenv(find_dotenv())
 
 bot = Bot(getenv("TOKEN"))
 dp = Dispatcher(bot)
-prev_player: Player = Player()
+prev_player: Player = Player("", "-1", "Kasper", '0', '0')
 prev_time: int = int(time())
 spam_list: list[Player] = []
 
@@ -108,10 +108,7 @@ async def personal_info(callback_query: types.CallbackQuery):
 
     try:
         player = parse_data(import_string())[alias]
-        answer = "Your statistics:" + \
-                 "\nName: " + player.name + \
-                 "\nID: " + str(player.id) + \
-                 "\nPoints: " + str(player.points)
+        answer = "Your statistics: " + player.to_string()
     except KeyError:
         answer = "Sorry, you are not in Rating System now\nReport about it to @Neph0 or @n1ce_timothy or play your " \
                  "first game."
