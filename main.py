@@ -108,7 +108,7 @@ async def personal_info(callback_query: types.CallbackQuery):
 
     try:
         player = parse_data(import_string())[alias]
-        answer = "Your statistics: " + player.to_string()
+        answer = "Your statistics: " + str(player)
     except KeyError:
         answer = "Sorry, you are not in Rating System now\nReport about it to @Neph0 or @n1ce_timothy or play your " \
                  "first game."

@@ -25,11 +25,17 @@ class Player:
         self.loses: int = int(args[4])
         self.attendance: int = self.loses + self.points
 
-    def to_string(self) -> str:
+    def __str__(self) -> str:
         return "Name - " + self.name + \
                "\nId - " + str(self.id) + \
                "\nPoints - " + str(self.points) + \
                "\nLoses - " + str(self.loses)
+
+    def __repr__(self) -> str:
+        return "Name - " + self.name + \
+               "; Id - " + str(self.id) + \
+               "; Points - " + str(self.points) + \
+               "; Loses - " + str(self.loses)
 
 
 def import_string() -> str:
@@ -112,5 +118,4 @@ def top_rating() -> str:
 
 
 if __name__ == "__main__":
-    for p in parse_data(import_string()).values():
-        print(p.name)
+    pass
