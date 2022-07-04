@@ -8,7 +8,6 @@ Source: [Bot in Telegram](https://t.me/InnoMafiaBot)
 As a user, you firstly must join at least 1 time the game for getting id in the database of players. Only after that
 the bot would start to work with full functionality
 
----
 
 To start the bot, it's just required to press /start command
 
