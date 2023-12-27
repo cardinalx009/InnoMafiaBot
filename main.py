@@ -1,8 +1,10 @@
-# Main code of mafia bot
-# Catching messages to him and send some answers
-
-# Global task
-# TODO implement some answers for pm messages
+"""
+Main code of mafia bot
+Catching messages to him and send some answers
+"""
+__author__ = "Zener085, cutefluffyfox"
+__version__ = "2.0.1"
+__license__ = "MIT"
 
 from aiogram import Bot, Dispatcher, types, executor
 from time import time

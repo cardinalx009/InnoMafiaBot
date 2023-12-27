@@ -1,23 +1,77 @@
-# InnoMafiaBot
-Code for telegram bot, which is used for InnoMafia chanel
-Source: [Bot in Telegram](https://t.me/InnoMafiaBot)
+# InnoMafiaBot #
+
+<p align="center">
+   <img src="images/logo.jpg" alt="drawing" width="400"/>
+</p>
+
+[InnoMafiaBot](https://t.me/InnoMafiaBot) is a Telegram bot designed for the Mafia game community at Innopolis University. This bot provides users
+with valuable statistics and information about their participation in the Mafia game. Whether you're a seasoned player
+or just starting out, InnoMafiaBot has you covered!
 
 ---
 
-## How to use
-As a user, you firstly must join at least 1 time the game for getting id in the database of players. Only after that
-the bot would start to work with full functionality
+## Features ##
 
+- **User-Friendly Interface**: Interact with the bot using simple commands to access various features.
+- **Top Player Rankings**: Get insights into the top-performing players of the season.
+- **Personal Statistics**: Receive detailed information about your own game performance.
+- **Antispam System**: Prevents spam and ensures a smooth user experience.
 
-To start the bot, it's just required to press /start command
+## How to Use ##
 
-In the main menu you can ask to provide 3 positions: table of the most valuable players in the season, your score and 
-info about the bot. It also provides the link to the main chat and channel of mafia club.
+1. **Join the Game**: To utilize the bot's full functionality, join the Mafia game at Innopolis University at least once
+                      to get your unique player ID in the database.
+2. **Start the Bot**: Simply use the `/start` command to initialize the bot.
+3. **Main Menu Options**:
+   - `/info`: Learn more about the bot.
+   - `/personal_info`: View your personal game statistics.
+   - `/top`: Explore the top players of the season.
+   - Group URL: Access the main chat and channel of the Mafia club.
 
 ---
 
-## Additional
+### Prerequisites ###
 
-Thanks [Cute fox](https://github.com/cutefluffyfox) for helping to create this bot and providing some useful sources
+Ensure you have the following set up:
+- Python environment
+- Telegram account
 
-To more info, contact me or the Mafia club leader
+### Installation ###
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Zener085/InnoMafiaBot.git
+   cd InnoMafiaBot
+   ```
+
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Set up a `.env` file with your configuration:
+   ```env
+   TOKEN=your_telegram_bot_token
+   apiKey=your_firebase_apiKey
+   authDomain=your_firebase_authDomain
+   # Add other Firebase configuration parameters
+   ```
+
+4. Run the bot:
+   ```bash
+   python main.py
+   ```
+
+---
+
+## Contributors ##
+
+- **[Zener085](https://github.com/Zener085)**: Project initiator and primary contributor.
+- **[cutefluffyfox](https://github.com/cutefluffyfox)**: Collaborator and contributor.
+
+## Support and Issues ##
+
+For support or to report issues, contact [@n1ce_timothy](https://t.me/n1ce_timothy).
+Feel free to contribute by opening pull requests!
+
+**Happy Mafia Gaming!**

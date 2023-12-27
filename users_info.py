@@ -1,3 +1,10 @@
+"""
+Extracting information about players.
+"""
+__author__ = "Zener085"
+__version__ = "1.0.0"
+__license__ = "MIT"
+
 from pyrebase import initialize_app
 from dotenv import load_dotenv, find_dotenv
 from os import getenv
@@ -43,9 +50,12 @@ def import_string() -> str:
     return initialize_app(DATA).database().child("save").get().val()
 
 
-def parse_data(string: str = "") -> dict:
+def parse_data(string: str = None) -> dict:
     """parsing STRING to normal list"""
-    players: dict[str] = {}
+    if string is None:
+        return {}
+
+    players: dict[str, Player] = {}
 
     for substring in string.split(";")[:-1]:
         player = Player(*substring.split(":"))
