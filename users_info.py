@@ -1,5 +1,5 @@
 """
-Extracting information about players.
+O'yinchilar haqida ma'lumotlarni olish.
 """
 __author__ = "Zener085"
 __version__ = "1.0.0"
@@ -33,25 +33,36 @@ class Player:
         self.attendance: int = self.loses + self.points
 
     def __str__(self) -> str:
-        return "Name - " + self.name + \
-               "\nId - " + str(self.id) + \
-               "\nPoints - " + str(self.points) + \
-               "\nLoses - " + str(self.loses)
+        return "Ism - " + self.name + \
+               "\nID - " + str(self.id) + \
+               "\nOchkolar - " + str(self.points) + \
+               "\nMag'lubiyatlar - " + str(self.loses)
+
+    def get_info(self) -> str:
+        total_games = self.points + self.loses
+        win_rate = round((self.points / total_games * 100), 2) if total_games > 0 else 0
+        return (
+            f" Statistika: {self.name}\n\n"
+            f" Jami o'yinlar: {total_games}\n"
+            f" G'alabalar: {self.points}\n"
+            f" Mag'lubiyatlar: {self.loses}\n"
+            f" G'alaba foizi: {win_rate}%"
+        )
 
     def __repr__(self) -> str:
-        return "Name - " + self.name + \
-               "; Id - " + str(self.id) + \
-               "; Points - " + str(self.points) + \
-               "; Loses - " + str(self.loses)
+        return "Ism - " + self.name + \
+               "; ID - " + str(self.id) + \
+               "; Ochkolar - " + str(self.points) + \
+               "; Mag'lubiyatlar - " + str(self.loses)
 
 
 def import_string() -> str:
-    """import STRING from data"""
+    """Ma'lumotlar bazasidan ma'lumotlarni olish"""
     return initialize_app(DATA).database().child("save").get().val()
 
 
 def parse_data(string: str = None) -> dict:
-    """parsing STRING to normal list"""
+    """Ma'lumotlarni qayta ishlash"""
     if string is None:
         return {}
 
@@ -65,7 +76,7 @@ def parse_data(string: str = None) -> dict:
 
 
 def generate_top(top_: list) -> list:
-    """generate list with all players, had the same points in top 3 or higher"""
+    """Bir xil ochkoli top 3 o'yinchilarni ro'yxatini yaratish"""
     top_players: list = [[top_[0]]]
     index: int = 0
 
@@ -85,44 +96,44 @@ def generate_top(top_: list) -> list:
 
 
 def top_rating() -> str:
-    """return list of top 3 or higher players (if they have the same points)"""
-    answer = "Top mafia players:\n"
+    """Top 3 yoki undan yuqori o'yinchilar ro'yxatini qaytarish"""
+    answer = " Top o'yinchilar:\n\n"
     top: list = sorted(parse_data(import_string()).values(), key=lambda p: p.points, reverse=True)
 
-    if top[0].points == '0':
-        return "Everybody has the same number of points - 0."
+    if not top:
+        return " Hozircha o'yinchilar yo'q."
+
+    if top[0].points == 0:
+        return " Hamma o'yinchilarning ochkosi 0 ga teng."
 
     top = generate_top(top)
-
-    if len(top) == 1:  # All top 3 players have the same number of points
-        answer += f"1-{len(top[0])}: "
+    
+    if len(top) == 1:  # Barcha top 3 o'yinchilarning ochkolari bir xil
+        answer += f" 1-{len(top[0])}: "
         for player in top[0]:
             answer += f"{player.name}, "
-        answer += f"all have {top[0][0].points} points."
-    elif len(top) == 2:  # There are 2 groups of players, having 1-2 and 3-... places in rating
-        if len(top[0]) != 1:
-            answer += f"1-{len(top[0])}: "
-            for player in top[0]:
-                answer += f"{player.name}, "
-            answer += f"all have {top[0][0].points} points;\n"
-        else:
-            answer += f"1: {top[0][0].name}, {top[0][0].points} points;\n"
-
-        answer += f"{len(top[0]) + 1}-{len(top[1]) + len(top[0])}: "
-        for player in top[1]:
-            answer += f"{player.name}, "
-        answer += f"all have {top[1][0].points} points."
-    else:  # 1 and 2 places have different rating and 3-... have another
-        answer += f"1: {top[0][0].name}, {top[0][0].points} points;\n"
-        answer += f"2: {top[1][0].name}, {top[1][0].points} points;\n"
-
-        if len(top[2]) != 1:
-            answer += f"3-{len(top[2]) + 2}: "
-            for player in top[2]:
-                answer += f"{player.name}, "
-            answer += f"all have {top[2][0].points} points."
-        else:
-            answer += f"3: {top[2][0].name}, {top[2][0].points} points."
+        answer = answer[:-2]  # oxiridagi vergul va bo'shliqni olib tashlash
+        answer += f"\n Hammasi {top[0][0].points} ochkoga ega"
+    else:
+        medals = ["", "", ""]
+        place = 1
+        players_counted = 0
+        
+        for group in top:
+            if players_counted >= 3:
+                break
+                
+            if len(group) == 1:
+                answer += f"{medals[place-1]} {place}-o'rin: {group[0].name} - {group[0].points} ochko\n"
+            else:
+                answer += f"{medals[place-1]} {place}-o'rin: "
+                for player in group:
+                    answer += f"{player.name}, "
+                answer = answer[:-2]  # oxiridagi vergul va bo'shliqni olib tashlash
+                answer += f" - {group[0].points} ochko\n"
+                
+            place += len(group)
+            players_counted += len(group)
 
     return answer
 

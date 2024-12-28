@@ -1,0 +1,15 @@
+[Unit]
+Description=Mafia Game Telegram Bot
+After=network.target
+
+[Service]
+Type=simple
+User=user
+WorkingDirectory=/home/user/Desktop/mafia
+Environment=PYTHONPATH=/home/user/Desktop/mafia
+ExecStart=/home/user/Desktop/mafia/venv/bin/python main.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
